@@ -1,7 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+## These functions provide facilities to cache a matrix and calculate
+## its inverse.  If there is a second attempt to calculate the inverse
+## of the same matrix, the inverse is retrieved from the cache rather
+## than repeating the calculation.
+##
+## Example:
+## > source("cachematrix.R")
+## > j <- matrix(c(4,2,7,6), nrow=2, ncol=2)
+## > j
+##      [,1] [,2]
+## [1,]    4    7
+## [2,]    2    6
+## > w <- makeCacheMatrix(j)
+## > w$get()
+##      [,1] [,2]
+## [1,]    4    7
+## [2,]    2    6
+## > v <- cacheSolve(w)
+## > v
+##      [,1] [,2]
+## [1,]  0.6 -0.7
+## [2,] -0.2  0.4
+## > v <- cacheSolve(w)
+## getting cached data
+## > v
+##      [,1] [,2]
+## [1,]  0.6 -0.7
+## [2,] -0.2  0.4
 
-## Write a short comment describing this function
+## This function exposes the cache operations regarding
+## the input matrix and its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
         m <- NULL
@@ -13,12 +40,13 @@ makeCacheMatrix <- function(x = matrix()) {
         setinverse <- function(inverse) m <<- inverse
         getinverse <- function() m
         list(set = set, get = get,
-             setinverse = setinverse
+             setinverse = setinverse,
              getinverse = getinverse)
 }
 
 
-## Write a short comment describing this function
+## This function calculates the inverse of the input matrix
+## or retrieves it from the cache if it is available
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
